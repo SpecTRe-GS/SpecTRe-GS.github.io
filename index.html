@@ -1,1 +1,629 @@
-Hello world from the initial commit of SpecTRe-GS.
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="SpecTRe-GS">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SpecTRe-GS</title>
+
+  <link href="./static/css/googlefonts.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="./static/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="./static/js/jquery.3.5.1.min.js"></script>
+  <!-- <script defer src="./static/js/fontawesome.all.min.js"></script> -->
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script src="./static/js/video_comparison.js" defer></script>
+
+  <!-- <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>         -->
+  <script type="text/javascript" async
+    src="./static/js/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>        
+    
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+  });
+  </script>
+
+</head>
+
+<body>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+
+            <h1 class="title is-1 publication-title">SpecTRe-GS: Modeling Highly Specular Surfaces with Reflected Nearby Objects by Tracing Rays in 3D Gaussian Splatting</h1>
+            <br>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://me.jeffreet.com/">Jiajun Tang</a><sup>1</sup>&nbsp;&nbsp;</span>
+              <span class="author-block">
+                <a href="https://costrice.github.io/">Fan Fei</a><sup>1</sup>&nbsp;&nbsp;</span>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?hl=en&user=4cuefJ0AAAAJ">Zhihao Li</a><sup>2</sup>&nbsp;&nbsp;</span>
+              </span>
+              <span class="author-block">
+                <a href="https://wbstx.github.io/">Xiao Tang</a><sup>2</sup>&nbsp;&nbsp;</span>
+              </span>
+              <span class="author-block">
+                <a href="https://liushiyong.cn/">Shiyong Liu</a><sup>2</sup>&nbsp;&nbsp;</span>
+              </span>
+              <span class="author-block">
+                Youyu Chen<sup>3</sup>&nbsp;&nbsp;</span><br />
+              </span>
+              <span class="author-block">
+                <a href="https://harr7y.github.io/">Binxiao Huang</a><sup>4</sup>&nbsp;&nbsp;</span>
+              </span>
+              <span class="author-block">
+                <a href="https://daveredrum.github.io/">Zhenyu Chen</a><sup>2</sup>&nbsp;&nbsp;</span>
+              </span>
+              <span class="author-block">
+                Xiaofei Wu<sup>2</sup>&nbsp;&nbsp;</span>
+              </span>
+              <span class="author-block">
+                <a href="https://camera.pku.edu.cn/">Boxin Shi</a><sup>1#</sup>
+              </span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block", style="color:#726f6f"><sup>1</sup>Peking University&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <span class="author-block", style="color:#726f6f"><sup>2</sup>Huawei Noah's Ark Lab&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <span class="author-block", style="color:#726f6f"><sup>3</sup>Harbin Institute of Technology&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <span class="author-block", style="color:#726f6f"><sup>4</sup>University of Hong Kong</span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block", style="font-size: 15px;color:#726f6f"><sup>#&nbsp;</sup>Corresponding author </span>
+            </div>
+
+            <div class="is-size-5 publication-venue">
+              CVPR 2025
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container is-max-desktop">
+        <video id="teaser" width="100%" playsinline controls autoplay loop muted>
+            <source src="./static/videos/teaser.mp4" type="video/mp4" />
+        </video>
+<script>
+    document.getElementById('teaser').play();
+</script>
+    </div>
+  </section>
+    
+    
+  <section class="section">
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <h2 class="title is-3">Abstract</h2>
+      <div class="content has-text-justified">
+          <p>
+            3D Gaussian Splatting (3DGS), a recently emerged multi-view 3D reconstruction technique, has shown significant advantages in real-time rendering and explicit editing. However, 3DGS encounters challenges in the accurate modeling of both high-frequency view-dependent appearances and global illumination effects, including inter-reflection. This paper introduces SpecTRe-GS, which addresses these challenges and models highly Specular surfaces that reflect nearby objects through Tracing Rays in 3D Gaussian Splatting. SpecTRe-GS separately models reflections from highly specular and rough surfaces to leverage the distinctions between their reflective properties and integrates an efficient ray tracer within the 3DGS framework for querying secondary rays, thus achieving fast and accurate rendering. Also, it incorporates normal prior guidance and joint geometry optimization at various stages of the training process to enhance geometry reconstruction for undistorted reflections. Experiments on both synthetic and real-world scenes demonstrate the superiority of SpecTRe-GS compared to existing 3DGS-based methods in capturing highly specular inter-reflections and also showcase its editing applications.
+          </p>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">Overview</h2>
+        <img alt="Architecture" src="./static/images/pipeline.svg" width="100%"/>
+    </div>
+    
+    <div class="container is-max-desktop">
+      <div class="content has-text-justified">
+        <p><strong>Overview of SpecTRe-GS.</strong> The scene is represented as a Gaussian point cloud, where each Gaussian is associated with geometry and shading attributes used to render the depth map $D$, normal map $N$, diffuse reflection $I_{\rm diff}$, specular reflectance $A_{\rm spec}$, and rough surface reflection $I_{\rm rs}$ through splatting. Highly specular surface reflection $I_{\rm ss}$ is formulated as the sum of the diffuse reflection $I_{\rm diff}$ and the specular reflection computed from the incident radiance $I_{\rm i}$ and specular reflectance $A_{\rm spec}$. The incident radiance $I_{\rm i}$ is determined along reflected secondary rays given by the scene geometry $D$ and $N$, with the indirect component $I_{\rm ind}$ and visibility $V_{\rm i}$ evaluated via efficient ray tracing within the Gaussian point cloud, and the direct component $I_{\rm dir}$ modeled by an optimizable environment map. The scene geometry is enhanced using normal prior guidance, numerical gradients from ray-traced incident radiance, and other training signals to achieve undistorted reflections.</p>
+      </div>
+    </div>
+    
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">Comparison With SOTA</h2>
+        <img alt="Architecture" src="./static/images/main_quan_table.svg" width="100%"/>
+    </div>
+  </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-4">Visual comparisons</h2>
+      <p>
+        Here we display side-by-side videos comparing our method to state-of-the-art baselines across different scenes. <br><br>
+        Select a scene and a baseline method below:
+      </p>
+      <br>
+      <div class="tabs-widget">
+        <div class="tabs is-centered">
+          <ul class="is-marginless">
+            <li><a>Helmet</a></li>
+            <li><a>MarbleTable</a></li>
+            <li><a>Vase</a></li>
+            <li><a>Pot</a></li>
+            <li><a>Toaster</a></li>
+            <li><a>Mirror</a></li>
+            <li><a>RealBowl</a></li>
+            <li><a>RealPot</a></li>
+          </ul>
+        </div>
+        <div class="content has-text-centered is-size-7-mobile">
+          Interactive visualization. Hover or tap to move the split. Click to play/pause. <br><br>
+          If videos are not displayed, try switching scenes or comparisons and wait for the videos to load.
+        </div>
+        <div class="tabs-content">
+          <!-- Begin Helmet. -->
+          <div>
+            <div class="tabs-widget">
+              <div class="tabs is-centered is-toggle is-toggle-rounded is-small">
+                <ul class="is-marginless">
+                  <li><a>Ours vs. 3DGS-DR</a></li>
+                  <li><a>Ours vs. GShader</a></li>
+                  <li><a>Ours vs. 3iGS</a></li>
+                  <li><a>Ours vs. GOF</a></li>
+                  <li><a>Ours vs. 3DGS</a></li>
+                </ul>
+              </div>
+              <div class="tabs-content">
+                <div class="video-comparison" data-label="Ours" data-label2="3DGS-DR">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/helmet_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/helmet_3DGS-DR.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="GShader">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/helmet_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/helmet_GShader.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="3iGS">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/helmet_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/helmet_3iGS.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="GOF">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/helmet_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/helmet_GOF.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="3DGS">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/helmet_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/helmet_3DGS.mp4"></video>
+                  <canvas></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Helmet. -->
+          <!-- Begin MarbleTable. -->
+          <div>
+            <div class="tabs-widget">
+              <div class="tabs is-centered is-toggle is-toggle-rounded is-small">
+                <ul class="is-marginless">
+                  <li><a>Ours vs. 3DGS-DR</a></li>
+                  <li><a>Ours vs. GShader</a></li>
+                  <li><a>Ours vs. 3iGS</a></li>
+                  <li><a>Ours vs. GOF</a></li>
+                  <li><a>Ours vs. 3DGS</a></li>
+                </ul>
+              </div>
+              <div class="tabs-content">
+                <div class="video-comparison" data-label="Ours" data-label2="3DGS-DR">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/marbletable_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/marbletable_3DGS-DR.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="GShader">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/marbletable_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/marbletable_GShader.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="3iGS">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/marbletable_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/marbletable_3iGS.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="GOF">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/marbletable_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/marbletable_GOF.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="3DGS">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/marbletable_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/marbletable_3DGS.mp4"></video>
+                  <canvas></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End MarbleTable. -->
+          <!-- Begin Vase. -->
+          <div>
+            <div class="tabs-widget">
+              <div class="tabs is-centered is-toggle is-toggle-rounded is-small">
+                <ul class="is-marginless">
+                  <li><a>Ours vs. 3DGS-DR</a></li>
+                  <li><a>Ours vs. GShader</a></li>
+                  <li><a>Ours vs. 3iGS</a></li>
+                  <li><a>Ours vs. GOF</a></li>
+                  <li><a>Ours vs. 3DGS</a></li>
+                </ul>
+              </div>
+              <div class="tabs-content">
+                <div class="video-comparison" data-label="Ours" data-label2="3DGS-DR">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/vase_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/vase_3DGS-DR.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="GShader">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/vase_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/vase_GShader.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="3iGS">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/vase_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/vase_3iGS.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="GOF">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/vase_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/vase_GOF.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="3DGS">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/vase_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/vase_3DGS.mp4"></video>
+                  <canvas></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Vase. -->
+          <!-- Begin Pot. -->
+          <div>
+            <div class="tabs-widget">
+              <div class="tabs is-centered is-toggle is-toggle-rounded is-small">
+                <ul class="is-marginless">
+                  <li><a>Ours vs. 3DGS-DR</a></li>
+                  <li><a>Ours vs. GShader</a></li>
+                  <li><a>Ours vs. 3iGS</a></li>
+                  <li><a>Ours vs. GOF</a></li>
+                  <li><a>Ours vs. 3DGS</a></li>
+                </ul>
+              </div>
+              <div class="tabs-content">
+                <div class="video-comparison" data-label="Ours" data-label2="3DGS-DR">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/pot_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/pot_3DGS-DR.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="GShader">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/pot_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/pot_GShader.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="3iGS">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/pot_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/pot_3iGS.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="GOF">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/pot_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/pot_GOF.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="3DGS">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/pot_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/pot_3DGS.mp4"></video>
+                  <canvas></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Pot. -->
+          <!-- Begin Toaster. -->
+          <div>
+            <div class="tabs-widget">
+              <div class="tabs is-centered is-toggle is-toggle-rounded is-small">
+                <ul class="is-marginless">
+                  <li><a>Ours vs. 3DGS-DR</a></li>
+                  <li><a>Ours vs. GShader</a></li>
+                  <li><a>Ours vs. 3iGS</a></li>
+                  <li><a>Ours vs. GOF</a></li>
+                  <li><a>Ours vs. 3DGS</a></li>
+                </ul>
+              </div>
+              <div class="tabs-content">
+                <div class="video-comparison" data-label="Ours" data-label2="3DGS-DR">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/toaster_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/toaster_3DGS-DR.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="GShader">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/toaster_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/toaster_GShader.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="3iGS">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/toaster_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/toaster_3iGS.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="GOF">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/toaster_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/toaster_GOF.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="3DGS">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/toaster_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/toaster_3DGS.mp4"></video>
+                  <canvas></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Toaster. -->
+          <!-- Begin Mirror. -->
+          <div>
+            <div class="tabs-widget">
+              <div class="tabs is-centered is-toggle is-toggle-rounded is-small">
+                <ul class="is-marginless">
+                  <li><a>Ours vs. 3DGS-DR</a></li>
+                  <li><a>Ours vs. GShader</a></li>
+                  <li><a>Ours vs. 3iGS</a></li>
+                  <li><a>Ours vs. GOF</a></li>
+                  <li><a>Ours vs. 3DGS</a></li>
+                </ul>
+              </div>
+              <div class="tabs-content">
+                <div class="video-comparison" data-label="Ours" data-label2="3DGS-DR">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/mirror_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/mirror_3DGS-DR.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="GShader">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/mirror_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/mirror_GShader.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="3iGS">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/mirror_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/mirror_3iGS.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="GOF">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/mirror_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/mirror_GOF.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="3DGS">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/mirror_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/mirror_3DGS.mp4"></video>
+                  <canvas></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Mirror. -->
+          <!-- Begin RealBowl. -->
+          <div>
+            <div class="tabs-widget">
+              <div class="tabs is-centered is-toggle is-toggle-rounded is-small">
+                <ul class="is-marginless">
+                  <li><a>Ours vs. 3DGS-DR</a></li>
+                  <li><a>Ours vs. GShader</a></li>
+                  <li><a>Ours vs. 3iGS</a></li>
+                  <li><a>Ours vs. GOF</a></li>
+                  <li><a>Ours vs. 3DGS</a></li>
+                </ul>
+              </div>
+              <div class="tabs-content">
+                <div class="video-comparison" data-label="Ours" data-label2="3DGS-DR">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/realbowl_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/realbowl_3DGS-DR.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="GShader">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/realbowl_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/realbowl_GShader.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="3iGS">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/realbowl_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/realbowl_3iGS.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="GOF">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/realbowl_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/realbowl_GOF.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="3DGS">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/realbowl_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/realbowl_3DGS.mp4"></video>
+                  <canvas></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End RealBowl. -->
+          <!-- Begin RealPot. -->
+          <div>
+            <div class="tabs-widget">
+              <div class="tabs is-centered is-toggle is-toggle-rounded is-small">
+                <ul class="is-marginless">
+                  <li><a>Ours vs. 3DGS-DR</a></li>
+                  <li><a>Ours vs. GShader</a></li>
+                  <li><a>Ours vs. 3iGS</a></li>
+                  <li><a>Ours vs. GOF</a></li>
+                  <li><a>Ours vs. 3DGS</a></li>
+                </ul>
+              </div>
+              <div class="tabs-content">
+                <div class="video-comparison" data-label="Ours" data-label2="3DGS-DR">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/realpot_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/realpot_3DGS-DR.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="GShader">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/realpot_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/realpot_GShader.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="3iGS">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/realpot_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/realpot_3iGS.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="GOF">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/realpot_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/realpot_GOF.mp4"></video>
+                  <canvas></canvas>
+                </div>
+                <div class="video-comparison" data-label="Ours" data-label2="3DGS">
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/realpot_Ours.mp4"></video>
+                  <video class="video" width=100% loop playsinline autoplay muted
+                         src="./static/videos/per_scene/realpot_3DGS.mp4"></video>
+                  <canvas></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End RealPot. -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+        <h2 class="title">BibTeX</h2>
+        <pre><code>
+@inproceedings{SpecTRe-GS,
+    author       = {Jiajun Tang and Fan Fei and Zhihao Li and Xiao Tang and Shiyong Liu and Youyu Chen and Binxiao Huang and Zhenyu Chen and Xiaofei Wu and Boxin Shi},
+    title        = {{SpecTRe-GS}: Modeling Highly Specular Surfaces with Reflected Nearby Objects by Tracing Rays in {3D} {G}aussian Splatting},
+    booktitle    = {CVPR},
+    year         = {2025},
+}
+          </code></pre>
+      </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+                This webpage is based on the project page for <a href="https://camp-nerf.github.io">CamP</a>. The video comparison tool is from the <a
+                href="https://dorverbin.github.io/refnerf/index.html">Ref-NeRF</a> project.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+      
+      
+</body>
+
+</html>
